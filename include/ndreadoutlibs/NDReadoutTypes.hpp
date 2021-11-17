@@ -56,10 +56,7 @@ struct PACMAN_MESSAGE_STRUCT
             50000000);
   }
 
-  uint64_t get_first_timestamp() const
-  {
-    return get_timestamp();
-  }
+  uint64_t get_first_timestamp() const { return get_timestamp(); }
 
   // FIX ME - implement this in the frame later
   void set_first_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
@@ -70,7 +67,7 @@ struct PACMAN_MESSAGE_STRUCT
   uint64_t get_message_type() const // NOLINT(build/unsigned)
   {
     return reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data) // NOLINT
-      ->get_msg_header((void*)&data)                                         // NOLINT
+      ->get_msg_header((void*)&data)                                                    // NOLINT
       ->type;
   }
   void inspect_message() const
@@ -79,8 +76,10 @@ struct PACMAN_MESSAGE_STRUCT
 
     TLOG_DEBUG(1) << "Message Type: " << (char)get_message_type(); // NOLINT
 
-    uint16_t numWords =                                                                                       // NOLINT
-      reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)->get_msg_header((void*)&data)->words; // NOLINT
+    uint16_t numWords = // NOLINT
+      reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)
+        ->get_msg_header((void*)&data)
+        ->words; // NOLINT
 
     TLOG_DEBUG(1) << "Num words in message: " << numWords;
 
@@ -88,7 +87,8 @@ struct PACMAN_MESSAGE_STRUCT
       TLOG_DEBUG(1) << "Inspecting word " << i;
 
       dunedaq::detdataformats::pacman::PACMANFrame::PACMANMessageWord* theWord =
-        reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)->get_msg_word((void*)&data, i); // NOLINT
+        reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)->get_msg_word((void*)&data,
+                                                                                                   i); // NOLINT
 
       TLOG_DEBUG(1) << "Word type: " << (char)theWord->data_word.type;                // NOLINT
       TLOG_DEBUG(1) << "PACMAN I/O Channel: " << (char)theWord->data_word.channel_id; // NOLINT
@@ -121,7 +121,6 @@ struct PACMAN_MESSAGE_STRUCT
   size_t get_num_frames() { return 1; }
 
   size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
-
 
   static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDLArTPC;
   static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDLArTPC;

@@ -8,10 +8,10 @@
 #ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANLISTREQUESTHANDLER_HPP_
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANLISTREQUESTHANDLER_HPP_
 
+#include "readoutlibs/FrameErrorRegistry.hpp"
 #include "readoutlibs/ReadoutIssues.hpp"
 #include "readoutlibs/models/DefaultRequestHandlerModel.hpp"
 #include "readoutlibs/models/SkipListLatencyBufferModel.hpp"
-#include "readoutlibs/FrameErrorRegistry.hpp"
 
 #include "detdataformats/pacman/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
@@ -35,20 +35,23 @@ namespace dunedaq {
 namespace ndreadoutlibs {
 
 class PACMANListRequestHandler
-  : public readoutlibs::DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT,
-                                      readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>
+  : public readoutlibs::DefaultRequestHandlerModel<
+      types::PACMAN_MESSAGE_STRUCT,
+      readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>
 {
 public:
   using inherited =
-    readoutlibs::DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT, readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>;
+    readoutlibs::DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT,
+                                            readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>;
   using SkipListAcc = typename folly::ConcurrentSkipList<types::PACMAN_MESSAGE_STRUCT>::Accessor;
   using SkipListSkip = typename folly::ConcurrentSkipList<types::PACMAN_MESSAGE_STRUCT>::Skipper;
 
-  PACMANListRequestHandler(std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>& latency_buffer,
-                           std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
+  PACMANListRequestHandler(
+    std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>& latency_buffer,
+    std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
     : DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT,
                                  readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>(latency_buffer,
-                                                                                           error_registry)
+                                                                                                        error_registry)
   {
     TLOG_DEBUG(TLVL_WORK_STEPS) << "PACMANistRequestHandler created...";
   }
@@ -57,7 +60,7 @@ protected:
 private:
 };
 
-}  // namespace ndreadoutlibs
-}  // namespace dunedaq
+} // namespace ndreadoutlibs
+} // namespace dunedaq
 
-#endif  // NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANLISTREQUESTHANDLER_HPP_
+#endif // NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANLISTREQUESTHANDLER_HPP_
