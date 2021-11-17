@@ -10,8 +10,6 @@ find_dependency(appfwk)
 find_dependency(readoutlibs)
 find_dependency(daqdataformats)
 find_dependency(detdataformats)
-find_dependency(dfmessages)
-find_dependency(timinglibs)
 find_dependency(folly)
 
 
