@@ -37,11 +37,15 @@ public:
   explicit PACMANFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
     : readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>(error_registry)
   {
-      readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::add_preprocess_task(
-      std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
-    // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
   }
 
+  void conf(const nlohmann::json& args) override
+  {
+    readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::add_preprocess_task(
+      std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
+    // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
+    TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::conf(args);
+  }
 protected:
   // Internals
   timestamp_t m_previous_ts = 0;
