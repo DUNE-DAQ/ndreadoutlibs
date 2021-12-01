@@ -11,7 +11,7 @@ find_dependency(readoutlibs)
 find_dependency(daqdataformats)
 find_dependency(detdataformats)
 find_dependency(folly)
-
+find_dependency(Boost COMPONENTS iostreams)
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/@PROJECT_NAME@)
 
