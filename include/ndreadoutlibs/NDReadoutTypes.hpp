@@ -56,6 +56,7 @@ struct PACMAN_MESSAGE_STRUCT
             50000000);
   }
 
+  uint64_t get_first_timestamp(const PACMAN_MESSAGE_STRUCT& s) const {} // NOLINT(build/unsigned)
   uint64_t get_first_timestamp() const { return get_timestamp(); }
 
   // FIX ME - implement this in the frame later
