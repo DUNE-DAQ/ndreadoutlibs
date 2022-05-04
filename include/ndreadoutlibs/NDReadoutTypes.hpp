@@ -8,8 +8,7 @@
 #ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
 
-#include "appfwk/DAQSink.hpp"
-#include "appfwk/DAQSource.hpp"
+#include "iomanager/IOManager.hpp"
 
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/GeoID.hpp"
@@ -140,10 +139,10 @@ struct PACMANTimestampGetter
   }
 };
 
-typedef dunedaq::appfwk::DAQSink<PACMAN_MESSAGE_STRUCT> PACMANFrameSink;
-typedef std::unique_ptr<PACMANFrameSink> UniquePACMANFrameSink;
-using PACMANFramePtrSink = appfwk::DAQSink<std::unique_ptr<types::PACMAN_MESSAGE_STRUCT>>;
-using UniquePACMANFramePtrSink = std::unique_ptr<PACMANFramePtrSink>;
+typedef dunedaq::iomanager::SenderConcept<PACMAN_MESSAGE_STRUCT> PACMANFrameSink;
+typedef std::shared_ptr<PACMANFrameSink> SharedPACMANFrameSink;
+using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::PACMAN_MESSAGE_STRUCT>>;
+using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
 
 } // namespace types
 } // namespace ndreadoutlibs
