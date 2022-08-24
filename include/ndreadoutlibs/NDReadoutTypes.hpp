@@ -168,12 +168,20 @@ namespace dunedaq {
 	  return thisptr->get_timestamp();
 	}
 
-	void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
+	uint64_t get_first_timestamp() const { return get_timestamp(); }
+
+	void set_first_timestamp(uint64_t ts) // NOLINT(build/unsigned)
 	{
 	  //	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data);        // NOLINT
 	  //thisptr -> settimestamp(ts);
 	  // Need to implement in MPDFrame first
 	}
+	// ! Need these to compile - TODO: understand specifics of light sytem
+	size_t get_payload_size() { return MPD_FRAME_SIZE; }
+	size_t get_num_frames() { return 1; }
+	size_t get_frame_size() { return MPD_FRAME_SIZE; }
+	// Set the right value for this field
+	static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
 
 	FrameType* begin() { return reinterpret_cast<FrameType*>(&data[0]); }
 	FrameType* end()   { return reinterpret_cast<FrameType*>(data + MPD_FRAME_SIZE); }
