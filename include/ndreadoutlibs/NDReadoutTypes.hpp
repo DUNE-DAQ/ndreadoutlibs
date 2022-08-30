@@ -11,7 +11,7 @@
 #include "iomanager/IOManager.hpp"
 
 #include "daqdataformats/FragmentHeader.hpp"
-#include "daqdataformats/GeoID.hpp"
+#include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
 
 #include <cstdint> // uint_t types
@@ -121,8 +121,8 @@ struct PACMAN_MESSAGE_STRUCT
 
   size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
 
-  static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDLArTPC;
-  static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDLArTPC;
+  static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
+  static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kPACMAN;
 
   // Set the right value for this field
   static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
