@@ -11,7 +11,7 @@
 #include "iomanager/IOManager.hpp"
 
 #include "daqdataformats/FragmentHeader.hpp"
-#include "daqdataformats/GeoID.hpp"
+#include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
 #include "detdataformats/mpd/MPDFrame.hpp"
 
