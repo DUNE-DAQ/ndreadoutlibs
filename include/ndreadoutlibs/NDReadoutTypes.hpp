@@ -122,8 +122,8 @@ namespace dunedaq {
 
 	size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
 
-	static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDLArTPC;
-	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDLArTPC;
+	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
+	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kPACMAN;
 
 	// Set the right value for this field
 	static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
@@ -186,8 +186,8 @@ namespace dunedaq {
 	FrameType* begin() { return reinterpret_cast<FrameType*>(&data[0]); }
 	FrameType* end()   { return reinterpret_cast<FrameType*>(data + MPD_FRAME_SIZE); }
 
-	static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDPD;
-	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDPD;
+	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
+	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kMPD;
 
       };
     } // namespace types
