@@ -147,8 +147,11 @@ namespace dunedaq {
   
       /**
        * @brief MPD frame
-       **/
-      const constexpr std::size_t MPD_FRAME_SIZE = 1024; // CLARIFY MEANING OF THIS. Number of readout units in frame?
+       * Size = 3724[Bytes]
+       * */
+
+      const constexpr std::size_t MPD_FRAME_SIZE = 3724; 
+
       struct MPD_MESSAGE_STRUCT {
 	using FrameType = MPD_MESSAGE_STRUCT;
 	char data[MPD_FRAME_SIZE];
@@ -172,8 +175,6 @@ namespace dunedaq {
 
 	void set_first_timestamp(uint64_t ts) // NOLINT(build/unsigned)
 	{
-	  //	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data);        // NOLINT
-	  //thisptr -> settimestamp(ts);
 	  // Need to implement in MPDFrame first
 	}
 	// ! Need these to compile - TODO: understand specifics of light sytem
