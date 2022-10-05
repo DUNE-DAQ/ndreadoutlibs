@@ -39,8 +39,7 @@ public:
   {}
 
   // Custom pipeline registration
-  //  void conf(const nlohmann::json& args) override; //?
-  // Do I also need this - understand implementtion
+  void conf(const nlohmann::json& args) override; 
 
 protected:
   // Internals
@@ -54,21 +53,18 @@ protected:
   /**
    * Pipeline Stage 1.: Check proper timestamp increments in MPD frame
    * */
-  void timestamp_check(frameptr fp){
-    // To be implemented
-  }
-
+  void timestamp_check(frameptr fp) ;
   /**
    * Pipeline Stage 2.: Check headers for error flags
    * */
-  void frame_error_check(frameptr /*fp*/){
-    // To be implemented
-  }
+  void frame_error_check(frameptr /*fp*/) ;
 
 private:
 };
 
 } // namespace ndreadoutlibs
 } // namespace dunedaq
+
+#include "detail/MPDFrameProcessor.hxx"
 
 #endif // NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDFRAMEPROCESSOR_HPP_
