@@ -177,7 +177,7 @@ namespace dunedaq {
 	{
 	  // Need to implement in MPDFrame first
 	}
-	// ! Need these to compile - TODO: understand specifics of light sytem
+
 	size_t get_payload_size() { return MPD_FRAME_SIZE; }
 	size_t get_num_frames() { return 1; }
 	size_t get_frame_size() { return MPD_FRAME_SIZE; }
