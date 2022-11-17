@@ -14,6 +14,7 @@
 #include "readoutlibs/models/SkipListLatencyBufferModel.hpp"
 
 #include "detdataformats/pacman/PACMANFrame.hpp"
+#include "detdataformats/toad/TOADFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutTypes.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"

@@ -13,6 +13,7 @@
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/GeoID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
+#include "detdataformats/toad/TOADFrameOverlay.hpp"
 
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr
@@ -26,13 +27,13 @@ namespace types {
  * Size = 816[Bytes] (12*64+1*32+2*8)
  * */
 const constexpr std::size_t PACMAN_FRAME_SIZE = 1024 * 1024;
-struct PACMAN_MESSAGE_STRUCT
+struct PACMAN_MESSAGE_STRUCT1
 {
-  using FrameType = PACMAN_MESSAGE_STRUCT;
+  using FrameType = PACMAN_MESSAGE_STRUCT1;
   // data
   char data[PACMAN_FRAME_SIZE];
   // comparable based on first timestamp
-  bool operator<(const PACMAN_MESSAGE_STRUCT& other) const
+  bool operator<(const PACMAN_MESSAGE_STRUCT1& other) const
   {
     auto thisptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data);        // NOLINT
     auto otherptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&other.data); // NOLINT
@@ -133,11 +134,65 @@ struct PACMAN_MESSAGE_STRUCT
  * */
 struct PACMANTimestampGetter
 {
-  uint64_t operator()(const PACMAN_MESSAGE_STRUCT& data) // NOLINT(build/unsigned)
+  uint64_t operator()(const PACMAN_MESSAGE_STRUCT1& data) // NOLINT(build/unsigned)
   {
     return data.get_timestamp();
   }
 };
+
+
+struct PACMAN_MESSAGE_STRUCT  //renamed to run a check
+{ 
+  using FrameType = PACMAN_MESSAGE_STRUCT;
+  dunedaq::detdataformats::toad::TOADFrameOverlay data[1];
+  //std::size_t TOAD_FRAME_SIZE;
+  //std::size_t TOAD_FRAME_SIZE = sizeof(data[0]);
+  std::size_t TOAD_FRAME_SIZE = (size_t)(data[0].get_size());
+  static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDLArTPC;
+  static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDLArTPC;
+
+  bool operator<(const PACMAN_MESSAGE_STRUCT& other) const
+  {
+    return this->get_timestamp() < other.get_timestamp() ? true : false;
+  }
+
+  uint64_t get_timestamp() const // NOLINT(build/unsigned)
+  { 
+    return ((uint64_t)data[0].get_timestamp())*50000000; //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+  }
+  
+  uint64_t get_first_timestamp() const { return get_timestamp(); }
+  void set_first_timestamp(uint64_t ts) {};
+  void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
+  {
+    data[0].tstmp = ts;
+  }
+  /*FrameType* begin() { return this; }
+
+  FrameType* end() { return this; } // NOLINT
+  */
+  FrameType* begin()
+  {
+    return reinterpret_cast<FrameType*>(&data[0]); // NOLINT
+  }
+
+  FrameType* end()
+  {
+    return reinterpret_cast<FrameType*>(data + TOAD_FRAME_SIZE); // NOLINT
+  }
+  size_t get_payload_size() { return TOAD_FRAME_SIZE; }
+
+  size_t get_num_frames() { return 1; }
+
+  size_t get_frame_size() { return TOAD_FRAME_SIZE; }
+
+  size_t frame_size = TOAD_FRAME_SIZE;
+  static const constexpr uint8_t frames_per_element = 1; // NOLINT(build/unsigned)
+  size_t element_size = TOAD_FRAME_SIZE; 
+  static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
+
+};
+
 
 typedef dunedaq::iomanager::SenderConcept<PACMAN_MESSAGE_STRUCT> PACMANFrameSink;
 typedef std::shared_ptr<PACMANFrameSink> SharedPACMANFrameSink;
