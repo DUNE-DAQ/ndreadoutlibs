@@ -22,6 +22,7 @@
 #include <string>
 
 using dunedaq::readoutlibs::logging::TLVL_BOOKKEEPING;
+using dunedaq::readoutlibs::logging::TLVL_FRAME_RECEIVED;
 
 namespace dunedaq {
 namespace ndreadoutlibs {
