@@ -173,7 +173,7 @@ namespace dunedaq {
 
 	uint64_t get_first_timestamp() const { return get_timestamp(); }
 
-	void set_first_timestamp(uint64_t ts) // NOLINT(build/unsigned)
+	void set_first_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
 	{
 	  // Need to implement in MPDFrame first
 	}
