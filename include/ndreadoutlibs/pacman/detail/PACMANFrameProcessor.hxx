@@ -25,6 +25,8 @@ PACMANFrameProcessor::timestamp_check(frameptr fp)
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();
+  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed
+                                  << std::setprecision(8) << (static_cast<double>(m_current_ts % (50000000000)) / 50000000.0) << " sec)";
 
   // Check timestamp
   // RS warning : not fixed rate!
