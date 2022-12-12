@@ -121,8 +121,7 @@ struct PACMAN_MESSAGE_STRUCT
 
   size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
 
-  static const constexpr daqdataformats::SourceID::Subsystem subsystem =
-    daqdataformats::SourceID::Subsystem::kDetectorReadout;
+  static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
   static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kPACMAN;
 
   // Set the right value for this field

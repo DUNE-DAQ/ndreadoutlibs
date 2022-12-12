@@ -37,8 +37,7 @@ public:
 
   explicit PACMANFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
     : readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>(error_registry)
-  {
-  }
+  {}
 
   // Custom pipeline registration
   void conf(const nlohmann::json& args) override;
