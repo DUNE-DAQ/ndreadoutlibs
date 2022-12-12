@@ -3,7 +3,7 @@
 namespace dunedaq {
 namespace ndreadoutlibs {
 
-void 
+void
 PACMANFrameProcessor::conf(const nlohmann::json& args)
 {
   readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::add_preprocess_task(
@@ -15,7 +15,7 @@ PACMANFrameProcessor::conf(const nlohmann::json& args)
 /**
  * Pipeline Stage 1.: Check proper timestamp increments in DAPHNE frame
  * */
-void 
+void
 PACMANFrameProcessor::timestamp_check(frameptr fp)
 {
   // If EMU data, emulate perfectly incrementing timestamp
@@ -25,8 +25,9 @@ PACMANFrameProcessor::timestamp_check(frameptr fp)
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();
-  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed
-                                  << std::setprecision(8) << (static_cast<double>(m_current_ts % (50000000000)) / 50000000.0) << " sec)";
+  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks (..."
+                                  << std::fixed << std::setprecision(8)
+                                  << (static_cast<double>(m_current_ts % (50000000000)) / 50000000.0) << " sec)";
 
   // Check timestamp
   // RS warning : not fixed rate!
@@ -51,7 +52,7 @@ PACMANFrameProcessor::timestamp_check(frameptr fp)
 /**
  * Pipeline Stage 2.: Check headers for error flags
  * */
-void 
+void
 PACMANFrameProcessor::frame_error_check(frameptr /*fp*/)
 {
   // check error fields
