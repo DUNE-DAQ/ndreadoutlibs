@@ -26,19 +26,28 @@ namespace dunedaq {
        * @brief PACMAN frame
        * Size = 816[Bytes] (12*64+1*32+2*8)
        * */
-      const constexpr std::size_t PACMAN_FRAME_SIZE = 1024 * 1024;
       struct PACMAN_MESSAGE_STRUCT
       {
 	using FrameType = PACMAN_MESSAGE_STRUCT;
 	// data
-	char data[PACMAN_FRAME_SIZE];
+	std::deque<char> data;
+	void load_message( const void * load_data, const unsigned int size ) {
+	  char * message = new char [size]; 
+	 
+	  std::memcpy(message, load_data, size);
+	  for( unsigned int i = 0 ; i < size ; ++i ) {
+	    data.push_back( *(message+i) ) ;
+	  }
+	  delete[] message;
+	}
+
 	// comparable based on first timestamp
 	bool operator<(const PACMAN_MESSAGE_STRUCT& other) const
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&other.data); // NOLINT
-	  return (thisptr->get_msg_header((void*)&data)->unix_ts) <
-	    (otherptr->get_msg_header((void*)&other.data)->unix_ts) // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0]);        // NOLINT
+	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&other.data[0]); // NOLINT
+	  return (thisptr->get_msg_header((void*)&data[0])->unix_ts) <
+	    (otherptr->get_msg_header((void*)&other.data[0])->unix_ts) // NOLINT
 	    ? true
 	    : false;
 	}
@@ -47,8 +56,8 @@ namespace dunedaq {
 	uint64_t get_timestamp() const // NOLINT(build/unsigned)
 	{
 	  return ((uint64_t)( // NOLINT
-			     reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)
-			     ->get_msg_header((void*)&data)
+			     reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])
+			     ->get_msg_header((void*)&data[0])
 			     ->unix_ts) * // NOLINT
 		  // 1000000000);
 		  // FIX ME!!! HARDCODED CONVERSION TO TICKS FROM SECONDS. MULTIPLYING BY 5E7 SINCE
@@ -66,8 +75,8 @@ namespace dunedaq {
 
 	uint64_t get_message_type() const // NOLINT(build/unsigned)
 	{
-	  return reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data) // NOLINT
-	    ->get_msg_header((void*)&data)                                                    // NOLINT
+	  return reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0]) // NOLINT
+	    ->get_msg_header((void*)&data[0])                                                    // NOLINT
 	    ->type;
 	}
 	void inspect_message() const
@@ -77,8 +86,8 @@ namespace dunedaq {
 	  TLOG_DEBUG(1) << "Message Type: " << (char)get_message_type(); // NOLINT
 
 	  uint16_t numWords = // NOLINT
-	    reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)
-	    ->get_msg_header((void*)&data)
+	    reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])
+	    ->get_msg_header((void*)&data[0])
 	    ->words; // NOLINT
 
 	  TLOG_DEBUG(1) << "Num words in message: " << numWords;
@@ -87,7 +96,7 @@ namespace dunedaq {
 	    TLOG_DEBUG(1) << "Inspecting word " << i;
 
 	    dunedaq::detdataformats::pacman::PACMANFrame::PACMANMessageWord* theWord =
-	      reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data)->get_msg_word((void*)&data,
+	      reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],
 													 i); // NOLINT
 
 	    TLOG_DEBUG(1) << "Word type: " << (char)theWord->data_word.type;                // NOLINT
@@ -113,14 +122,14 @@ namespace dunedaq {
 
 	FrameType* end()
 	{
-	  return reinterpret_cast<FrameType*>(data + PACMAN_FRAME_SIZE); // NOLINT
+	  return reinterpret_cast<FrameType*>(data[0] + data.size()); // NOLINT
 	}
 
-	size_t get_payload_size() { return PACMAN_FRAME_SIZE; }
+	size_t get_payload_size() { return data.size(); }
 
 	size_t get_num_frames() { return 1; }
 
-	size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
+	size_t get_frame_size() { return data.size(); }
 
 	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
 	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kPACMAN;
@@ -147,19 +156,24 @@ namespace dunedaq {
   
       /**
        * @brief MPD frame
-       * Size = 3724[Bytes]
        * */
-
-      const constexpr std::size_t MPD_FRAME_SIZE = 3724; 
-
       struct MPD_MESSAGE_STRUCT {
 	using FrameType = MPD_MESSAGE_STRUCT;
-	char data[MPD_FRAME_SIZE];
+	std::deque<char> data ;
+
+	void load_message( const void * load_data, const unsigned int size ) {
+	  char * message = new char [size]; 
+	  std::memcpy(message, load_data, size);
+	  for( unsigned int i = 0 ; i < size ; ++i ) {
+	    data.push_back( *(message+i) ) ;
+	  }
+	  delete[] message;
+	}
 
 	bool operator<(const MPD_MESSAGE_STRUCT& other) const
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&other.data); // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
+	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&other.data[0]); // NOLINT
 	  return (thisptr->get_timestamp() < otherptr->get_timestamp()) // NOLINT
 		      ? true
 		      : false;
@@ -167,7 +181,7 @@ namespace dunedaq {
 	
 	uint64_t get_timestamp() const // NOLINT(build/unsigned)
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data);        // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
 	  return thisptr->get_timestamp();
 	}
 
@@ -178,14 +192,14 @@ namespace dunedaq {
 	  // Need to implement in MPDFrame first
 	}
 
-	size_t get_payload_size() { return MPD_FRAME_SIZE; }
+	size_t get_payload_size() { return data.size(); }
 	size_t get_num_frames() { return 1; }
-	size_t get_frame_size() { return MPD_FRAME_SIZE; }
+	size_t get_frame_size() { return data.size(); }
 	// Set the right value for this field
 	static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
 
 	FrameType* begin() { return reinterpret_cast<FrameType*>(&data[0]); }
-	FrameType* end()   { return reinterpret_cast<FrameType*>(data + MPD_FRAME_SIZE); }
+	FrameType* end()   { return reinterpret_cast<FrameType*>(data[0] + data.size()); }
 
 	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
 	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kMPD;
