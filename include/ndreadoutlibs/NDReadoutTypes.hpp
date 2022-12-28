@@ -9,7 +9,7 @@
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
 
 #include "iomanager/IOManager.hpp"
-
+#include "boost/test/unit_test.hpp"
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
@@ -33,6 +33,10 @@ namespace dunedaq {
 	// data
 	std::deque<char> data{std::deque<char>(PACMAN_FRAME_SIZE,0)};
 	void load_message( const void * load_data, const unsigned int size ) {
+	  if( size > data.size() ) {
+	    BOOST_ERROR("Unable to load all data. Size of data is greater than PACMAN frame size.");
+	    return ; 
+	  }
 	  char * message = new char [size]; 
 	 
 	  std::memcpy(message, load_data, size);
