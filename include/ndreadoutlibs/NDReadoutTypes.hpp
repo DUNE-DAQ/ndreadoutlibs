@@ -26,17 +26,18 @@ namespace dunedaq {
        * @brief PACMAN frame
        * Size = 816[Bytes] (12*64+1*32+2*8)
        * */
+      const constexpr std::size_t PACMAN_FRAME_SIZE = 1024 * 1024;
       struct PACMAN_MESSAGE_STRUCT
       {
 	using FrameType = PACMAN_MESSAGE_STRUCT;
 	// data
-	std::deque<char> data;
+	std::deque<char> data{std::deque<char>(PACMAN_FRAME_SIZE,0)};
 	void load_message( const void * load_data, const unsigned int size ) {
 	  char * message = new char [size]; 
 	 
 	  std::memcpy(message, load_data, size);
 	  for( unsigned int i = 0 ; i < size ; ++i ) {
-	    data.push_back( *(message+i) ) ;
+	    data[i] = *(message+i) ;
 	  }
 	  delete[] message;
 	}
