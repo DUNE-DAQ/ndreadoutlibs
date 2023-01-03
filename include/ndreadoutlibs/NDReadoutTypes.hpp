@@ -9,16 +9,22 @@
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
 
 #include "iomanager/IOManager.hpp"
-#include "boost/test/unit_test.hpp"
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
 #include "detdataformats/mpd/MPDFrame.hpp"
-
+#include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr
 
 namespace dunedaq {
+
+  ERS_DECLARE_ISSUE(ndreadoutlibs,
+		    InvalidDataSize,
+		    " Unable to load all data. Size of data (" << data_size 
+		    << ") is greater than PACMAN frame size (" << pacman_frame_size << ").",
+		    ((uint64_t)data_size)((uint64_t)pacman_frame_size)) // NOLINT
+
   namespace ndreadoutlibs {
     namespace types {
 
@@ -34,8 +40,8 @@ namespace dunedaq {
 	std::deque<char> data{std::deque<char>(PACMAN_FRAME_SIZE,0)};
 	void load_message( const void * load_data, const unsigned int size ) {
 	  if( size > data.size() ) {
-	    BOOST_ERROR("Unable to load all data. Size of data is greater than PACMAN frame size.");
-	    return ; 
+	    ers::error(InvalidDataSize(ERS_HERE, size, data.size()));
+	    return;
 	  }
 	  char * message = new char [size]; 
 	 
