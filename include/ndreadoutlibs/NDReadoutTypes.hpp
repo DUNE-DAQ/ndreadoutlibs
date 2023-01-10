@@ -145,9 +145,9 @@ struct PACMAN_MESSAGE_STRUCT  //renamed to run a check
 { 
   using FrameType = PACMAN_MESSAGE_STRUCT;
   dunedaq::detdataformats::toad::TOADFrameOverlay data[1];
-  //std::size_t TOAD_FRAME_SIZE;
+  //std::size_t TOAD_FRAME_SIZE = data[0].n_bytes;
   //std::size_t TOAD_FRAME_SIZE = sizeof(data[0]);
-  std::size_t TOAD_FRAME_SIZE = (size_t)(data[0].get_size());
+  //std::size_t TOAD_FRAME_SIZE = (size_t)(data[0].get_size());
   static const constexpr daqdataformats::GeoID::SystemType system_type = daqdataformats::GeoID::SystemType::kNDLArTPC;
   static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kNDLArTPC;
 
@@ -178,17 +178,17 @@ struct PACMAN_MESSAGE_STRUCT  //renamed to run a check
 
   FrameType* end()
   {
-    return reinterpret_cast<FrameType*>(data + TOAD_FRAME_SIZE); // NOLINT
+    return reinterpret_cast<FrameType*>(&data[0]); // NOLINT
   }
-  size_t get_payload_size() { return TOAD_FRAME_SIZE; }
+  size_t get_payload_size() { printf("Naseem size: %d\n", (int)data[0].get_size()); return data[0].get_size(); }
 
   size_t get_num_frames() { return 1; }
 
-  size_t get_frame_size() { return TOAD_FRAME_SIZE; }
+  size_t get_frame_size() { return data[0].get_size(); }
 
-  size_t frame_size = TOAD_FRAME_SIZE;
+  size_t frame_size = data[0].n_bytes;
   static const constexpr uint8_t frames_per_element = 1; // NOLINT(build/unsigned)
-  size_t element_size = TOAD_FRAME_SIZE; 
+  size_t element_size = data[0].n_bytes; 
   static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
 
 };
