@@ -15,7 +15,7 @@
 
 #include "detdataformats/mpd/MPDFrame.hpp"
 #include "logging/Logging.hpp"
-#include "ndreadoutlibs/NDReadoutTypes.hpp"
+#include "ndreadoutlibs/NDReadoutMPDTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"
 
 #include <atomic>
