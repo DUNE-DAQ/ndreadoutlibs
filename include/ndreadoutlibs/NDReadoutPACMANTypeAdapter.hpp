@@ -12,7 +12,6 @@
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
-#include "detdataformats/mpd/MPDFrame.hpp"
 #include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr
@@ -165,57 +164,6 @@ namespace dunedaq {
       using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::PACMAN_MESSAGE_STRUCT>>;
       using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
   
-      /**
-       * @brief MPD frame
-       * */
-      struct MPD_MESSAGE_STRUCT {
-	using FrameType = MPD_MESSAGE_STRUCT;
-	std::deque<char> data ;
-
-	void load_message( const void * load_data, const unsigned int size ) {
-	  char * message = new char [size]; 
-	  std::memcpy(message, load_data, size);
-	  for( unsigned int i = 0 ; i < size ; ++i ) {
-	    data.push_back( *(message+i) ) ;
-	  }
-	  delete[] message;
-	}
-
-	bool operator<(const MPD_MESSAGE_STRUCT& other) const
-	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&other.data[0]); // NOLINT
-	  return (thisptr->get_timestamp() < otherptr->get_timestamp()) // NOLINT
-		      ? true
-		      : false;
-	}
-	
-	uint64_t get_timestamp() const // NOLINT(build/unsigned)
-	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
-	  return thisptr->get_timestamp();
-	}
-
-	uint64_t get_first_timestamp() const { return get_timestamp(); }
-
-	void set_first_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
-	{
-	  // Need to implement in MPDFrame first
-	}
-
-	size_t get_payload_size() { return data.size(); }
-	size_t get_num_frames() { return 1; }
-	size_t get_frame_size() { return data.size(); }
-	// Set the right value for this field
-	static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
-
-	FrameType* begin() { return reinterpret_cast<FrameType*>(&data[0]); }
-	FrameType* end()   { return reinterpret_cast<FrameType*>(data[0] + data.size()); }
-
-	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
-	static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kMPD;
-
-      };
     } // namespace types
   } // namespace ndreadoutlibs
 } // namespace dunedaq
