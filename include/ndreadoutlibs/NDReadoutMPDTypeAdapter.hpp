@@ -1,12 +1,12 @@
 /**
- * @file NDReadoutTypes.hpp Payload type structures for the DUNE Near Detector
+ * @file NDReadoutMPDTypeAdapter.hpp Payload type structures for the DUNE Near Detector
  *
  * This is part of the DUNE DAQ , copyright 2021.
  * Licensing/copyright details are in the COPYING file that you should have
  * received with this code.
  */
-#ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
-#define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
+#ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTMPDTYPEADAPTER_HPP_
+#define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTMPDTYPEADAPTER_HPP_
 
 #include "iomanager/IOManager.hpp"
 #include "daqdataformats/FragmentHeader.hpp"
@@ -74,4 +74,4 @@ namespace dunedaq {
   } // namespace ndreadoutlibs
 } // namespace dunedaq
 
-#endif // NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTTYPES_HPP_
+#endif // NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_NDREADOUTMPDTYPEADAPTER_HPP_
