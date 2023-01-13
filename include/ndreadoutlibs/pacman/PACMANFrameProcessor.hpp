@@ -69,6 +69,9 @@ protected:
 
     // Acquire timestamp
     m_current_ts = fp->get_timestamp();
+    // 12-Jan-2023, KAB: added debug statement when frame is received. In later versions of this code,
+    // we will provide a constant variable for the debug level.
+    TLOG_DEBUG(19) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks";
 
     // Check timestamp
     // RS warning : not fixed rate!
