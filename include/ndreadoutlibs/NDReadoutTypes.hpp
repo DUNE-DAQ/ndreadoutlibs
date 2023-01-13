@@ -162,7 +162,9 @@ struct PACMAN_MESSAGE_STRUCT  //renamed to run a check
   }
   
   uint64_t get_first_timestamp() const { return get_timestamp(); }
-  void set_first_timestamp(uint64_t ts) {};
+  void set_first_timestamp(uint64_t ts) {
+      data[0].set_timestamp(ts / 50000000); //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+  };
   void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
   {
     data[0].tstmp = ts;
