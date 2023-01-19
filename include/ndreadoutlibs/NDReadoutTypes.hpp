@@ -13,6 +13,7 @@
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
 #include "detdataformats/pacman/PACMANFrame.hpp"
+#include "detdataformats/toad/TOADFrameOverlay.hpp"
 
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr
@@ -143,6 +144,60 @@ typedef dunedaq::iomanager::SenderConcept<PACMAN_MESSAGE_STRUCT> PACMANFrameSink
 typedef std::shared_ptr<PACMANFrameSink> SharedPACMANFrameSink;
 using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::PACMAN_MESSAGE_STRUCT>>;
 using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
+
+struct TOAD_MESSAGE_STRUCT
+{
+  using FrameType = TOAD_MESSAGE_STRUCT;
+  dunedaq::detdataformats::toad::TOADFrameOverlay data[1];
+
+  bool operator<(const TOAD_MESSAGE_STRUCT& other) const
+  {
+    return this->get_timestamp() < other.get_timestamp() ? true : false;
+  }
+
+  uint64_t get_timestamp() const // NOLINT(build/unsigned)
+  {
+    return ((uint64_t)data[0].get_timestamp())*50000000; //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+  }
+
+  uint64_t get_first_timestamp() const { return get_timestamp(); }
+  void set_first_timestamp(uint64_t ts) {
+      data[0].set_timestamp(ts / 50000000); //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+  };
+  void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
+  {
+    data[0].tstmp = ts;
+  }
+  
+  FrameType* begin()
+  {
+    return reinterpret_cast<FrameType*>(&data[0]); // NOLINT
+  }
+
+  FrameType* end()
+  {
+    return reinterpret_cast<FrameType*>(&data[0]); // NOLINT
+  }
+  size_t get_payload_size() { return data[0].get_size(); }
+
+  size_t get_num_frames() { return 1; }
+
+  size_t get_frame_size() { return data[0].get_size(); }
+
+  size_t frame_size = data[0].n_bytes;
+  static const constexpr uint8_t frames_per_element = 1; // NOLINT(build/unsigned)
+  size_t element_size = data[0].n_bytes;
+  static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
+
+  static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
+  static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kTOAD;
+
+};
+
+  typedef dunedaq::iomanager::SenderConcept<TOAD_MESSAGE_STRUCT> TOADFrameSink;
+  typedef std::shared_ptr<TOADFrameSink> SharedTOADFrameSink;
+  using TOADFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::TOAD_MESSAGE_STRUCT>>;
+  using SharedTOADFramePtrSink = std::shared_ptr<TOADFramePtrSink>;
 
 } // namespace types
 } // namespace ndreadoutlibs
