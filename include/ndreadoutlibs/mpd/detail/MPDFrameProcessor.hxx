@@ -6,6 +6,9 @@ namespace ndreadoutlibs {
 void 
 MPDFrameProcessor::conf(const nlohmann::json& args)
 {
+  auto config = args["rawdataprocessorconf"].get<readoutlibs::readoutconfig::RawDataProcessorConf>();
+  m_clock_frequency = config.clock_speed_hz;
+
   readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>::add_preprocess_task(
     std::bind(&MPDFrameProcessor::timestamp_check, this, std::placeholders::_1));
   // m_tasklist.push_back( std::bind(&MPDFrameProcessor::frame_error_check, this, std::placeholders::_1) );
@@ -25,6 +28,7 @@ MPDFrameProcessor::timestamp_check(frameptr fp)
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();
+  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received MPD frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed << std::setprecision(8) << (static_cast<double>(m_current_ts % (m_clock_frequency*1000)) / static_cast<double>(m_clock_frequency)) << " sec)"; // NOLINT
 
   // Check timestamp
   // RS warning : not fixed rate!
