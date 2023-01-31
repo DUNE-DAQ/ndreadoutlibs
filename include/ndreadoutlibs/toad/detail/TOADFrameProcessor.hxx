@@ -20,6 +20,7 @@ void
 TOADFrameProcessor::timestamp_check(frameptr fp)
 {
   m_current_ts = (timestamp_t)(fp->get_timestamp());
+  TLOG() << "Timestamp at line " << __LINE__ << " is " << m_current_ts;
   m_previous_ts = m_current_ts;
   m_last_processed_daq_ts = m_current_ts;
 }

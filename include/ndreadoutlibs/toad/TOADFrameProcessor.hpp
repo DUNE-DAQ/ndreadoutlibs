@@ -31,7 +31,7 @@ class TOADFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::
 public:
   using inherited = readoutlibs::TaskRawDataProcessorModel<types::TOAD_MESSAGE_STRUCT>;
   using frameptr = types::TOAD_MESSAGE_STRUCT*;
-  using pacmanframeptr = dunedaq::detdataformats::toad::TOADFrameOverlay*;
+  using toadframeptr = dunedaq::detdataformats::toad::TOADFrameOverlay*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit TOADFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
