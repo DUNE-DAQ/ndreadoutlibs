@@ -13,7 +13,7 @@
 
 #include "detdataformats/pacman/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
-#include "ndreadoutlibs/NDReadoutTypes.hpp"
+#include "ndreadoutlibs/NDReadoutPACMANTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"
 
 #include <atomic>
