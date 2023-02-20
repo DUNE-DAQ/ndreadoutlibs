@@ -157,12 +157,13 @@ struct TOAD_MESSAGE_STRUCT
 
   uint64_t get_timestamp() const // NOLINT(build/unsigned)
   {
-    return ((uint64_t)data[0].get_timestamp())*50000000; //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+    printf("ndreadoutlibs ts: %lu", (uint64_t)(data[0].get_timestamp()));
+    return ((uint64_t)(data[0].get_timestamp())); //TIMESTAMP ALREADY IN TICKS
   }
 
   uint64_t get_first_timestamp() const { return get_timestamp(); }
   void set_first_timestamp(uint64_t ts) {
-      data[0].set_timestamp(ts / 50000000); //HARDCODED CONVERSION FROM UNIX TS TO TICKS
+      data[0].set_timestamp(ts);
   };
   void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
   {
