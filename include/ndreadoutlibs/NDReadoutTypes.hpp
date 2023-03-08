@@ -157,7 +157,7 @@ struct TOAD_MESSAGE_STRUCT
 
   uint64_t get_timestamp() const // NOLINT(build/unsigned)
   {
-    printf("ndreadoutlibs ts: %lu", (uint64_t)(data[0].get_timestamp()));
+    //printf("ndreadoutlibs ts: %lu", (uint64_t)(data[0].get_timestamp()));
     return ((uint64_t)(data[0].get_timestamp())); //TIMESTAMP ALREADY IN TICKS
   }
 

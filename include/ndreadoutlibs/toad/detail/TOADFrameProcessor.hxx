@@ -1,4 +1,5 @@
 // Declarations for TOADFrameProcessor
+#include <chrono>
 
 namespace dunedaq {
 namespace ndreadoutlibs {
@@ -20,6 +21,13 @@ void
 TOADFrameProcessor::timestamp_check(frameptr fp)
 {
   m_current_ts = (timestamp_t)(fp->get_timestamp());
+  /*CHANGING TIMESTAMPS TO WALLCLOCK TIME
+  auto time_now = std::chrono::system_clock::now().time_since_epoch();
+  uint64_t current_time = // NOLINT (build/unsigned)
+  std::chrono::duration_cast<std::chrono::microseconds>(time_now).count();
+  uint64_t clock_frequency = 56000000;
+  m_current_ts = (clock_frequency / 1000000) * current_time;
+  */
   TLOG() << "Timestamp at line " << __LINE__ << " is " << m_current_ts;
   m_previous_ts = m_current_ts;
   m_last_processed_daq_ts = m_current_ts;
