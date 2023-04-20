@@ -37,8 +37,8 @@ namespace dunedaq {
 
 	bool operator<(const MPD_MESSAGE_STRUCT& other) const
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&other.data[0]); // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&data[0]);        // NOLINT
+	  auto otherptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&other.data[0]); // NOLINT
 	  return (thisptr->get_timestamp() < otherptr->get_timestamp()) // NOLINT
 		      ? true
 		      : false;
@@ -46,7 +46,7 @@ namespace dunedaq {
 	
 	uint64_t get_timestamp() const // NOLINT(build/unsigned)
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::mpd::MPDFrame*>(&data[0]);        // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&data[0]);        // NOLINT
 	  return thisptr->get_timestamp();
 	}
 

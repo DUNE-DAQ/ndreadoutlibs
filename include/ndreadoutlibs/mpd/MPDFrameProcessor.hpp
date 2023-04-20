@@ -31,7 +31,7 @@ class MPDFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::M
 public:
   using inherited = readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>;
   using frameptr = types::MPD_MESSAGE_STRUCT*;
-  using mpdframeptr = dunedaq::detdataformats::mpd::MPDFrame*;
+  using mpdframeptr = dunedaq::nddetdataformats::MPDFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit MPDFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)

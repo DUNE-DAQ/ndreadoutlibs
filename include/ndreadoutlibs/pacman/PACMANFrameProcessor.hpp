@@ -32,7 +32,7 @@ class PACMANFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types
 public:
   using inherited = readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>;
   using frameptr = types::PACMAN_MESSAGE_STRUCT*;
-  using pacmanframeptr = dunedaq::detdataformats::pacman::PACMANFrame*;
+  using pacmanframeptr = dunedaq::nddetdataformats::PACMANFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit PACMANFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
