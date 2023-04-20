@@ -12,6 +12,7 @@ find_package(opmonlib REQUIRED)
 find_package(readoutlibs REQUIRED)
 find_package(daqdataformats REQUIRED)
 find_package(detdataformats REQUIRED)
+find_package(nddetdataformats REQUIRED)
 find_package(folly REQUIRED)
 find_package(Boost COMPONENTS iostreams REQUIRED)
 set(BOOST_LIBS Boost::iostreams ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_LIBRARIES})
@@ -32,6 +33,7 @@ set(NDREADOUTLIBS_DEPENDENCIES
   opmonlib::opmonlib
   daqdataformats::daqdataformats
   detdataformats::detdataformats
+  nddetdataformats::nddetdataformats
 )
 
 ##############################################################################

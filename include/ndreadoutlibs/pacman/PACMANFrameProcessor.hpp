@@ -11,7 +11,7 @@
 #include "readoutlibs/ReadoutIssues.hpp"
 #include "readoutlibs/models/TaskRawDataProcessorModel.hpp"
 
-#include "detdataformats/pacman/PACMANFrame.hpp"
+#include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutPACMANTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"

@@ -11,7 +11,7 @@
 #include "readoutlibs/ReadoutIssues.hpp"
 #include "readoutlibs/models/TaskRawDataProcessorModel.hpp"
 
-#include "detdataformats/mpd/MPDFrame.hpp"
+#include "nddetdataformats/MPDFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutMPDTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"

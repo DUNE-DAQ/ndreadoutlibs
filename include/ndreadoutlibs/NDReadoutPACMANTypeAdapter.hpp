@@ -11,7 +11,7 @@
 #include "iomanager/IOManager.hpp"
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
-#include "detdataformats/pacman/PACMANFrame.hpp"
+#include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr

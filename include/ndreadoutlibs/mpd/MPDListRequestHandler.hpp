@@ -13,7 +13,7 @@
 #include "readoutlibs/models/DefaultRequestHandlerModel.hpp"
 #include "readoutlibs/models/SkipListLatencyBufferModel.hpp"
 
-#include "detdataformats/mpd/MPDFrame.hpp"
+#include "nddetdataformats/MPDFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutMPDTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"
