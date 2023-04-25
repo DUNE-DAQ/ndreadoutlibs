@@ -11,7 +11,7 @@
 #include "iomanager/IOManager.hpp"
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
-#include "detdataformats/pacman/PACMANFrame.hpp"
+#include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
 #include <memory>  // unique_ptr
@@ -54,8 +54,8 @@ namespace dunedaq {
 	// comparable based on first timestamp
 	bool operator<(const PACMAN_MESSAGE_STRUCT& other) const
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0]);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&other.data[0]); // NOLINT
+	  auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0]);        // NOLINT
+	  auto otherptr = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&other.data[0]); // NOLINT
 	  return (thisptr->get_msg_header((void*)&data[0])->unix_ts) <
 	    (otherptr->get_msg_header((void*)&other.data[0])->unix_ts) // NOLINT
 	    ? true
@@ -66,7 +66,7 @@ namespace dunedaq {
 	uint64_t get_timestamp() const // NOLINT(build/unsigned)
 	{
 	  return ((uint64_t)( // NOLINT
-			     reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])
+			     reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])
 			     ->get_msg_header((void*)&data[0])
 			     ->unix_ts) * // NOLINT
 		  // 1000000000);
@@ -80,12 +80,12 @@ namespace dunedaq {
 	// FIX ME - implement this in the frame later
 	void set_first_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
 	{
-	  // reinterpret_cast<dunedaq::detdataformats::pacman::PACMANFrame*>(&data)->set_timestamp(ts); // NOLINT
+	  // reinterpret_cast<dunedaq::nddetdataformats::PACMANFrame*>(&data)->set_timestamp(ts); // NOLINT
 	}
 
 	uint64_t get_message_type() const // NOLINT(build/unsigned)
 	{
-	  return reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0]) // NOLINT
+	  return reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0]) // NOLINT
 	    ->get_msg_header((void*)&data[0])                                                    // NOLINT
 	    ->type;
 	}
@@ -96,7 +96,7 @@ namespace dunedaq {
 	  TLOG_DEBUG(1) << "Message Type: " << (char)get_message_type(); // NOLINT
 
 	  uint16_t numWords = // NOLINT
-	    reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])
+	    reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])
 	    ->get_msg_header((void*)&data[0])
 	    ->words; // NOLINT
 
@@ -105,15 +105,15 @@ namespace dunedaq {
 	  for (unsigned int i = 0; i < numWords; i++) {
 	    TLOG_DEBUG(1) << "Inspecting word " << i;
 
-	    dunedaq::detdataformats::pacman::PACMANFrame::PACMANMessageWord* theWord =
-	      reinterpret_cast<const dunedaq::detdataformats::pacman::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],
+	    dunedaq::nddetdataformats::PACMANFrame::PACMANMessageWord* theWord =
+	      reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],
 													 i); // NOLINT
 
 	    TLOG_DEBUG(1) << "Word type: " << (char)theWord->data_word.type;                // NOLINT
 	    TLOG_DEBUG(1) << "PACMAN I/O Channel: " << (char)theWord->data_word.channel_id; // NOLINT
 	    TLOG_DEBUG(1) << "Word receipt timestamp: " << theWord->data_word.receipt_timestamp;
 
-	    dunedaq::detdataformats::pacman::PACMANFrame::LArPixPacket* thePacket = &(theWord->data_word.larpix_word);
+	    dunedaq::nddetdataformats::PACMANFrame::LArPixPacket* thePacket = &(theWord->data_word.larpix_word);
 
 	    TLOG_DEBUG(1) << "Inspecting packet";
 

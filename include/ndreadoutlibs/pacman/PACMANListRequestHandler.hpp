@@ -13,7 +13,7 @@
 #include "readoutlibs/models/DefaultRequestHandlerModel.hpp"
 #include "readoutlibs/models/SkipListLatencyBufferModel.hpp"
 
-#include "detdataformats/pacman/PACMANFrame.hpp"
+#include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutPACMANTypeAdapter.hpp"
 #include "readoutlibs/ReadoutLogging.hpp"

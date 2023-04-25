@@ -10,6 +10,7 @@ find_dependency(appfwk)
 find_dependency(readoutlibs)
 find_dependency(daqdataformats)
 find_dependency(detdataformats)
+find_dependency(nddetdataformats)
 find_dependency(folly)
 find_dependency(Boost COMPONENTS iostreams)
 
