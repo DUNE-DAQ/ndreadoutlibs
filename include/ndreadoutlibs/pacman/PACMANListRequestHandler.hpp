@@ -36,22 +36,22 @@ namespace ndreadoutlibs {
 
 class PACMANListRequestHandler
   : public readoutlibs::DefaultRequestHandlerModel<
-      types::PACMAN_MESSAGE_STRUCT,
-      readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>
+      types::NDReadoutPACMANTypeAdapter,
+      readoutlibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>
 {
 public:
   using inherited =
-    readoutlibs::DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT,
-                                            readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>;
-  using SkipListAcc = typename folly::ConcurrentSkipList<types::PACMAN_MESSAGE_STRUCT>::Accessor;
-  using SkipListSkip = typename folly::ConcurrentSkipList<types::PACMAN_MESSAGE_STRUCT>::Skipper;
+    readoutlibs::DefaultRequestHandlerModel<types::NDReadoutPACMANTypeAdapter,
+                                            readoutlibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>;
+  using SkipListAcc = typename folly::ConcurrentSkipList<types::NDReadoutPACMANTypeAdapter>::Accessor;
+  using SkipListSkip = typename folly::ConcurrentSkipList<types::NDReadoutPACMANTypeAdapter>::Skipper;
 
   PACMANListRequestHandler(
-    std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>& latency_buffer,
+    std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>& latency_buffer,
     std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : DefaultRequestHandlerModel<types::PACMAN_MESSAGE_STRUCT,
-                                 readoutlibs::SkipListLatencyBufferModel<types::PACMAN_MESSAGE_STRUCT>>(latency_buffer,
-                                                                                                        error_registry)
+    : DefaultRequestHandlerModel<types::NDReadoutPACMANTypeAdapter,
+                                 readoutlibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>(latency_buffer,
+													     error_registry)
   {
     TLOG_DEBUG(TLVL_WORK_STEPS) << "PACMANistRequestHandler created...";
   }

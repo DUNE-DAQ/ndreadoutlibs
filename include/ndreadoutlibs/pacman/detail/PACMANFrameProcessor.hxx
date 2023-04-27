@@ -6,10 +6,10 @@ namespace ndreadoutlibs {
 void 
 PACMANFrameProcessor::conf(const nlohmann::json& args)
 {
-  readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::add_preprocess_task(
+  readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
     std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
   // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
-  TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>::conf(args);
+  TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::conf(args);
 }
 
 /**
