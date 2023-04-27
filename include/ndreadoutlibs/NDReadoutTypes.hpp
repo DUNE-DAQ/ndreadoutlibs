@@ -127,6 +127,8 @@ struct PACMAN_MESSAGE_STRUCT
 
   // Set the right value for this field
   static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
+  int get_sample(int i){return i;}
+  int get_sample_addr(){return 0;}
 };
 
 /**
@@ -177,7 +179,7 @@ struct TOAD_MESSAGE_STRUCT
 
   FrameType* end()
   {
-    return reinterpret_cast<FrameType*>(&data[0]); // NOLINT
+    return reinterpret_cast<FrameType*>(&data[0]+data[0].get_size()); // NOLINT
   }
   size_t get_payload_size() { return data[0].get_size(); }
 
@@ -192,9 +194,10 @@ struct TOAD_MESSAGE_STRUCT
 
   static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
   static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kTOAD;
+  int get_sample(int i){return data[0].get_samples(i);}
+  int get_sample_addr(){return data[0].get_first_sample();}
 
 };
-
   typedef dunedaq::iomanager::SenderConcept<TOAD_MESSAGE_STRUCT> TOADFrameSink;
   typedef std::shared_ptr<TOADFrameSink> SharedTOADFrameSink;
   using TOADFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::TOAD_MESSAGE_STRUCT>>;
