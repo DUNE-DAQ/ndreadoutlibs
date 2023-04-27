@@ -37,11 +37,21 @@ namespace dunedaq {
 
 	bool operator<(const MPD_MESSAGE_STRUCT& other) const
 	{
-	  auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&data[0]);        // NOLINT
-	  auto otherptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&other.data[0]); // NOLINT
-	  return (thisptr->get_timestamp() < otherptr->get_timestamp()) // NOLINT
-		      ? true
-		      : false;
+          uint64_t this_timestamp  = 0;  //NOLINT
+          uint64_t other_timestamp = 0;  //NOLINT
+
+          // 27-Apr-2023, KAB: the size of the data member needs to be checked to see whether it
+          // actually contains any data, before trying to interpret the contents.
+          if (data.size() >= sizeof(dunedaq::nddetdataformats::MPDFrame)) {
+            auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&data[0]);  // NOLINT
+            this_timestamp = thisptr->get_timestamp();
+          }
+          if (other.data.size() >= sizeof(dunedaq::nddetdataformats::MPDFrame)) {
+            auto otherptr = reinterpret_cast<const dunedaq::nddetdataformats::MPDFrame*>(&other.data[0]);  // NOLINT
+            other_timestamp = otherptr->get_timestamp();
+          }
+
+	  return (this_timestamp < other_timestamp) ? true : false;
 	}
 	
 	uint64_t get_timestamp() const // NOLINT(build/unsigned)
