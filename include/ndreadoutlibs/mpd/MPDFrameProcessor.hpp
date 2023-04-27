@@ -26,16 +26,16 @@ using dunedaq::readoutlibs::logging::TLVL_BOOKKEEPING;
 namespace dunedaq {
 namespace ndreadoutlibs {
 
-class MPDFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>
+class MPDFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>
 {
 public:
-  using inherited = readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>;
-  using frameptr = types::MPD_MESSAGE_STRUCT*;
+  using inherited = readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>;
+  using frameptr = types::NDReadoutMPDTypeAdapter*;
   using mpdframeptr = dunedaq::nddetdataformats::MPDFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit MPDFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>(error_registry)
+    : readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
   {}
 
   // Custom pipeline registration

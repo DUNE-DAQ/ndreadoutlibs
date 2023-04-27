@@ -35,18 +35,18 @@ namespace dunedaq {
 namespace ndreadoutlibs {
   
 class MPDListRequestHandler
-  : public readoutlibs::DefaultRequestHandlerModel<types::MPD_MESSAGE_STRUCT, readoutlibs::SkipListLatencyBufferModel<types::MPD_MESSAGE_STRUCT>>
+  : public readoutlibs::DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, readoutlibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>
 {
 public:
   using inherited =
-    readoutlibs::DefaultRequestHandlerModel<types::MPD_MESSAGE_STRUCT, readoutlibs::SkipListLatencyBufferModel<types::MPD_MESSAGE_STRUCT>>;
-  using SkipListAcc = typename folly::ConcurrentSkipList<types::MPD_MESSAGE_STRUCT>::Accessor;
-  using SkipListSkip = typename folly::ConcurrentSkipList<types::MPD_MESSAGE_STRUCT>::Skipper;
+    readoutlibs::DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, readoutlibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>;
+  using SkipListAcc = typename folly::ConcurrentSkipList<types::NDReadoutMPDTypeAdapter>::Accessor;
+  using SkipListSkip = typename folly::ConcurrentSkipList<types::NDReadoutMPDTypeAdapter>::Skipper;
 
   MPDListRequestHandler(
-    std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::MPD_MESSAGE_STRUCT>>& latency_buffer,
+    std::unique_ptr<readoutlibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>& latency_buffer,
     std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : DefaultRequestHandlerModel<types::MPD_MESSAGE_STRUCT, readoutlibs::SkipListLatencyBufferModel<types::MPD_MESSAGE_STRUCT>>(latency_buffer, error_registry)
+    : DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, readoutlibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>(latency_buffer, error_registry)
   {
     TLOG_DEBUG(TLVL_WORK_STEPS) << "MPDistRequestHandler created...";
   }
