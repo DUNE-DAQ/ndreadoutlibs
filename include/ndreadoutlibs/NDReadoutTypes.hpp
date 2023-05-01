@@ -118,6 +118,8 @@ struct PACMAN_MESSAGE_STRUCT
 
   size_t get_payload_size() { return PACMAN_FRAME_SIZE; }
 
+  void set_payload_size(size_t){}
+
   size_t get_num_frames() { return 1; }
 
   size_t get_frame_size() { return PACMAN_FRAME_SIZE; }
@@ -150,7 +152,12 @@ using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
 struct TOAD_MESSAGE_STRUCT
 {
   using FrameType = TOAD_MESSAGE_STRUCT;
-  dunedaq::detdataformats::toad::TOADFrameOverlay data[1];
+  using OverlayType = dunedaq::detdataformats::toad::TOADFrameOverlay;
+   std::vector<uint8_t> data;
+
+   const OverlayType* get_overlay() const { return reinterpret_cast<const OverlayType*>(&data[0]); }
+
+   TOAD_MESSAGE_STRUCT() : data(sizeof(OverlayType)) {}
 
   bool operator<(const TOAD_MESSAGE_STRUCT& other) const
   {
@@ -160,16 +167,15 @@ struct TOAD_MESSAGE_STRUCT
   uint64_t get_timestamp() const // NOLINT(build/unsigned)
   {
     //printf("ndreadoutlibs ts: %lu", (uint64_t)(data[0].get_timestamp()));
-    return ((uint64_t)(data[0].get_timestamp())); //TIMESTAMP ALREADY IN TICKS
+    return ((uint64_t)(get_overlay()->get_timestamp())); //TIMESTAMP ALREADY IN TICKS
   }
 
   uint64_t get_first_timestamp() const { return get_timestamp(); }
-  void set_first_timestamp(uint64_t ts) {
-      data[0].set_timestamp(ts);
+  void set_first_timestamp(uint64_t ts) { set_timestamp(ts);
   };
   void set_timestamp(uint64_t ts) // NOLINT(build/unsigned)
   {
-    data[0].tstmp = ts;
+    const_cast<OverlayType*>(get_overlay())->tstmp = ts;
   }
   
   FrameType* begin()
@@ -179,23 +185,23 @@ struct TOAD_MESSAGE_STRUCT
 
   FrameType* end()
   {
-    return reinterpret_cast<FrameType*>(&data[0]+data[0].get_size()); // NOLINT
+    return reinterpret_cast<FrameType*>(&data[0]+1); // NOLINT
   }
-  size_t get_payload_size() { return data[0].get_size(); }
+  size_t get_payload_size() { return data.size(); }
 
   size_t get_num_frames() { return 1; }
 
-  size_t get_frame_size() { return data[0].get_size(); }
+  size_t get_frame_size() { return get_overlay()->n_bytes; }
 
-  size_t frame_size = data[0].n_bytes;
+  void set_payload_size(size_t sz) { data.resize(sz); }
+
   static const constexpr uint8_t frames_per_element = 1; // NOLINT(build/unsigned)
-  size_t element_size = data[0].n_bytes;
   static const constexpr uint64_t expected_tick_difference = 0; // NOLINT(build/unsigned)
 
   static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
   static const constexpr daqdataformats::FragmentType fragment_type = daqdataformats::FragmentType::kTOAD;
-  int get_sample(int i){return data[0].get_samples(i);}
-  int get_sample_addr(){return data[0].get_first_sample();}
+  int get_sample(int i){return get_overlay()->get_samples(i);}
+  int get_sample_addr(){return get_overlay()->get_first_sample();}
 
 };
   typedef dunedaq::iomanager::SenderConcept<TOAD_MESSAGE_STRUCT> TOADFrameSink;
