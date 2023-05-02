@@ -27,16 +27,16 @@ using dunedaq::readoutlibs::logging::TLVL_FRAME_RECEIVED;
 namespace dunedaq {
 namespace ndreadoutlibs {
 
-class PACMANFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>
+class PACMANFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>
 {
 public:
-  using inherited = readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>;
-  using frameptr = types::PACMAN_MESSAGE_STRUCT*;
+  using inherited = readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>;
+  using frameptr = types::NDReadoutPACMANTypeAdapter*;
   using pacmanframeptr = dunedaq::nddetdataformats::PACMANFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit PACMANFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : readoutlibs::TaskRawDataProcessorModel<types::PACMAN_MESSAGE_STRUCT>(error_registry)
+    : readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>(error_registry)
   {}
 
   // Custom pipeline registration

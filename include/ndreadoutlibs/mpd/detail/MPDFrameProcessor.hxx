@@ -9,10 +9,10 @@ MPDFrameProcessor::conf(const nlohmann::json& args)
   auto config = args["rawdataprocessorconf"].get<readoutlibs::readoutconfig::RawDataProcessorConf>();
   m_clock_frequency = config.clock_speed_hz;
 
-  readoutlibs::TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>::add_preprocess_task(
+  readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>::add_preprocess_task(
     std::bind(&MPDFrameProcessor::timestamp_check, this, std::placeholders::_1));
   // m_tasklist.push_back( std::bind(&MPDFrameProcessor::frame_error_check, this, std::placeholders::_1) );
-  TaskRawDataProcessorModel<types::MPD_MESSAGE_STRUCT>::conf(args);
+  TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>::conf(args);
 }
 
 /**

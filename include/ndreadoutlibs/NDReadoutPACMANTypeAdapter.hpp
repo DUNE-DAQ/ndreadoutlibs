@@ -32,9 +32,9 @@ namespace dunedaq {
        * Size = 816[Bytes] (12*64+1*32+2*8)
        * */
       const constexpr std::size_t PACMAN_FRAME_SIZE = 1024 * 1024;
-      struct PACMAN_MESSAGE_STRUCT
+      struct NDReadoutPACMANTypeAdapter
       {
-	using FrameType = PACMAN_MESSAGE_STRUCT;
+	using FrameType = NDReadoutPACMANTypeAdapter;
 	// data
 	std::deque<char> data{std::deque<char>(PACMAN_FRAME_SIZE,0)};
 	void load_message( const void * load_data, const unsigned int size ) {
@@ -52,7 +52,7 @@ namespace dunedaq {
 	}
 
 	// comparable based on first timestamp
-	bool operator<(const PACMAN_MESSAGE_STRUCT& other) const
+	bool operator<(const NDReadoutPACMANTypeAdapter& other) const
 	{
 	  auto thisptr = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0]);        // NOLINT
 	  auto otherptr = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&other.data[0]); // NOLINT
@@ -153,15 +153,15 @@ namespace dunedaq {
        * */
       struct PACMANTimestampGetter
       {
-	uint64_t operator()(const PACMAN_MESSAGE_STRUCT& data) // NOLINT(build/unsigned)
+	uint64_t operator()(const NDReadoutPACMANTypeAdapter & data) // NOLINT(build/unsigned)
 	{
 	  return data.get_timestamp();
 	}
       };
 
-      typedef dunedaq::iomanager::SenderConcept<PACMAN_MESSAGE_STRUCT> PACMANFrameSink;
+      typedef dunedaq::iomanager::SenderConcept<NDReadoutPACMANTypeAdapter> PACMANFrameSink;
       typedef std::shared_ptr<PACMANFrameSink> SharedPACMANFrameSink;
-      using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::PACMAN_MESSAGE_STRUCT>>;
+      using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::NDReadoutPACMANTypeAdapter>>;
       using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
   
     } // namespace types

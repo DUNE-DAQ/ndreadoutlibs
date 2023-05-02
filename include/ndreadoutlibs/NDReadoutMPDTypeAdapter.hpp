@@ -22,8 +22,8 @@ namespace dunedaq {
       /**
        * @brief MPD frame
        * */
-      struct MPD_MESSAGE_STRUCT {
-	using FrameType = MPD_MESSAGE_STRUCT;
+      struct NDReadoutMPDTypeAdapter {
+	using FrameType = NDReadoutMPDTypeAdapter;
 	std::deque<char> data ;
 
 	void load_message( const void * load_data, const unsigned int size ) {
@@ -35,7 +35,7 @@ namespace dunedaq {
 	  delete[] message;
 	}
 
-	bool operator<(const MPD_MESSAGE_STRUCT& other) const
+	bool operator<(const NDReadoutMPDTypeAdapter & other) const
 	{
           uint64_t this_timestamp  = 0;  //NOLINT
           uint64_t other_timestamp = 0;  //NOLINT
