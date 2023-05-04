@@ -24,7 +24,7 @@ namespace dunedaq {
        * */
       struct NDReadoutMPDTypeAdapter {
 	using FrameType = NDReadoutMPDTypeAdapter;
-	std::deque<char> data ;
+	std::vector<char> data ;
 
 	void load_message( const void * load_data, const unsigned int size ) {
 	  char * message = new char [size]; 

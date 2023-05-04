@@ -36,7 +36,7 @@ namespace dunedaq {
       {
 	using FrameType = NDReadoutPACMANTypeAdapter;
 	// data
-	std::deque<char> data{std::deque<char>(PACMAN_FRAME_SIZE,0)};
+	std::vector<char> data{std::vector<char>(PACMAN_FRAME_SIZE,0)};
 	void load_message( const void * load_data, const unsigned int size ) {
 	  if( size > data.size() ) {
 	    ers::error(InvalidDataSize(ERS_HERE, size, data.size()));
