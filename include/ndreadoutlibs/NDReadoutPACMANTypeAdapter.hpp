@@ -42,13 +42,7 @@ namespace dunedaq {
 	    ers::error(InvalidDataSize(ERS_HERE, size, data.size()));
 	    return;
 	  }
-	  char * message = new char [size]; 
-	 
-	  std::memcpy(message, load_data, size);
-	  for( unsigned int i = 0 ; i < size ; ++i ) {
-	    data[i] = *(message+i) ;
-	  }
-	  delete[] message;
+	  memcpy(&data[0], load_data, size);
 	}
 
 	// comparable based on first timestamp
