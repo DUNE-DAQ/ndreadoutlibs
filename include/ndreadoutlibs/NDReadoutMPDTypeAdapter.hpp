@@ -27,12 +27,8 @@ namespace dunedaq {
 	std::vector<char> data ;
 
 	void load_message( const void * load_data, const unsigned int size ) {
-	  char * message = new char [size]; 
-	  std::memcpy(message, load_data, size);
-	  for( unsigned int i = 0 ; i < size ; ++i ) {
-	    data.push_back( *(message+i) ) ;
-	  }
-	  delete[] message;
+	  data.resize(size);
+	  memcpy(&data[0], load_data, size);
 	}
 
 	bool operator<(const NDReadoutMPDTypeAdapter & other) const
