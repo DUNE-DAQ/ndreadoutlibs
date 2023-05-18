@@ -62,6 +62,7 @@ protected:
   void frame_error_check(frameptr /*fp*/);
 
 private:
+  uint64_t m_clock_frequency; // NOLINT(build/unsigned)
 };
 
 } // namespace ndreadoutlibs
