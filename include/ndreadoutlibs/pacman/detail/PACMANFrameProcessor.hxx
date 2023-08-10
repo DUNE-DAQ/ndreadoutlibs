@@ -6,6 +6,9 @@ namespace ndreadoutlibs {
 void 
 PACMANFrameProcessor::conf(const nlohmann::json& args)
 {
+  auto config = args["rawdataprocessorconf"].get<readoutlibs::readoutconfig::RawDataProcessorConf>();
+  m_clock_frequency = config.clock_speed_hz;
+
   readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
     std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
   // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
@@ -25,8 +28,7 @@ PACMANFrameProcessor::timestamp_check(frameptr fp)
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();
-  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed
-                                  << std::setprecision(8) << (static_cast<double>(m_current_ts % (50000000000)) / 50000000.0) << " sec)";
+  TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PACMAN frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed << std::setprecision(8) << (static_cast<double>(m_current_ts % (m_clock_frequency*1000)) / static_cast<double>(m_clock_frequency)) << " sec)"; // NOLINT
 
   // Check timestamp
   // RS warning : not fixed rate!

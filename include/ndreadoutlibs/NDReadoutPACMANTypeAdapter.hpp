@@ -63,10 +63,9 @@ namespace dunedaq {
 			     reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])
 			     ->get_msg_header((void*)&data[0])
 			     ->unix_ts) * // NOLINT
-		  // 1000000000);
 		  // FIX ME!!! HARDCODED CONVERSION TO TICKS FROM SECONDS. MULTIPLYING BY 5E7 SINCE
-		  // 50 MHz CLOCK.
-		  50000000);
+		  // 62.5 MHz CLOCK.
+		  62500000);
 	}
 
 	uint64_t get_first_timestamp() const { return get_timestamp(); }
@@ -100,8 +99,7 @@ namespace dunedaq {
 	    TLOG_DEBUG(1) << "Inspecting word " << i;
 
 	    dunedaq::nddetdataformats::PACMANFrame::PACMANMessageWord* theWord =
-	      reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],
-													 i); // NOLINT
+	      reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],i); // NOLINT
 
 	    TLOG_DEBUG(1) << "Word type: " << (char)theWord->data_word.type;                // NOLINT
 	    TLOG_DEBUG(1) << "PACMAN I/O Channel: " << (char)theWord->data_word.channel_id; // NOLINT
