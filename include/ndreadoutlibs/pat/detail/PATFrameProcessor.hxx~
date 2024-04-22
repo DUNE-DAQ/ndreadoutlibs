@@ -1,0 +1,30 @@
+namespace dunedaq
+{
+  namespace ndreadoutlibs
+  {
+    void PATFrameProcessor::conf(const nlohmann::json &args)
+    {
+      auto config     = args["rawdataprocessorconf"].get<readoutlibs::readoutconfig::RawDataProcessorConf>();
+      m_clock_latency = config.clock_speed_hz;
+
+      readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPATTypeAdapter>::add_preprocess_task(std::bind(&PATFrameProcessor::timestamp_check, this, std::placeholder::_1));
+      TaskRawDataProcessorModel<types::NDReadoutPATTypeAdapter>::conf(args);				  
+    }
+
+    void PATFrameProcessor::timestamp_check(frameptr fp)
+    {
+      if (inherited::m_emulator_mode)
+	{
+
+	}
+      
+      m_current_ts = fp->get_timestamp();
+      TLOG_DEBUG(TLVL_FRAME_RECEIVED) << "Received PAT frame timestamp value of " << m_current_ts << " ticks (..." << std::fixed << std::setprecision(8) << (static_cast<double>(m_current_ts % (m_clock_frequency * 1000)) / static_cast<double>(m_clock_frequency)) << " sec)";
+
+    }
+
+    void PATFrameProcessor::frame_error_check(frameptr)
+    { }
+
+  }
+}
