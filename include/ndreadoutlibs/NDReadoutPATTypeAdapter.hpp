@@ -22,8 +22,9 @@ namespace dunedaq
 	
 	void load_message(const void *load_data, const uint size)
 	{
-	  data.resize(size);
-	  memcpy(&data[0], load_data, size);
+	  data.resize(4*size);
+	  memcpy(&data[0], load_data, 4*size); //Check for better solution
+	  for(int i_byte = 0; i_byte < (int)data.size(); i_byte++) TLOG_DEBUG(1) << "Byte: "<< i_byte << " is: "<< (uint)data[i_byte];
 	}
 	
 	bool operator<(const NDReadoutPATTypeAdapter &other) const
@@ -68,6 +69,7 @@ namespace dunedaq
 	static const constexpr daqdataformats::SourceID::Subsystem subsystem = daqdataformats::SourceID::Subsystem::kDetectorReadout;
 	static const constexpr daqdataformats::FragmentType fragment_type    = daqdataformats::FragmentType::kPAT;
       };
+
     }
   }
 }
