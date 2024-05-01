@@ -55,10 +55,7 @@ MPDFrameProcessor::timestamp_check(frameptr fp)
  * */
 void MPDFrameProcessor::frame_error_check(frameptr /*fp*/)
 {
-  // check error fields
-  // FIX ME - to be implemented
 
-  // fp->inspect_message();
 }
 
 } // namespace ndreadoutlibs
