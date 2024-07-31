@@ -8,8 +8,8 @@
 #ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDFRAMEPROCESSOR_HPP_
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDFRAMEPROCESSOR_HPP_
 
-#include "readoutlibs/ReadoutIssues.hpp"
-#include "readoutlibs/models/TaskRawDataProcessorModel.hpp"
+#include "datahandlinglibs/ReadoutIssues.hpp"
+#include "datahandlinglibs/models/TaskRawDataProcessorModel.hpp"
 
 #include "nddetdataformats/MPDFrame.hpp"
 #include "logging/Logging.hpp"
@@ -21,12 +21,12 @@
 #include <memory>
 #include <string>
 
-using dunedaq::readoutlibs::logging::TLVL_BOOKKEEPING;
+using dunedaq::datahandlinglibs::logging::TLVL_BOOKKEEPING;
 
 namespace dunedaq {
 namespace ndreadoutlibs {
 
-class MPDFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>
+class MPDFrameProcessor : public datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>
 {
 public:
   using inherited = readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>;
@@ -34,12 +34,12 @@ public:
   using mpdframeptr = dunedaq::nddetdataformats::MPDFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
-  explicit MPDFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
+  explicit MPDFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
+    ::datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
   {}
 
   // Custom pipeline registration
-  void conf(const nlohmann::json& args) override; 
+  void conf(const appmodel::DataHandlerModule* conf) override;
 
 protected:
   // Internals

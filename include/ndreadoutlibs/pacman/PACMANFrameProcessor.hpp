@@ -40,7 +40,7 @@ public:
   {}
 
   // Custom pipeline registration
-  void conf(const nlohmann::json& args) override;
+  void conf(const appmodel::DataHandlerModule* conf) override;
 
 protected:
   // Internals
