@@ -8,13 +8,13 @@
 #ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDFRAMEPROCESSOR_HPP_
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDFRAMEPROCESSOR_HPP_
 
-#include "datahandlinglibs/ReadoutIssues.hpp"
+#include "datahandlinglibs/DataHandlingIssues.hpp"
 #include "datahandlinglibs/models/TaskRawDataProcessorModel.hpp"
 
 #include "nddetdataformats/MPDFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutMPDTypeAdapter.hpp"
-#include "readoutlibs/ReadoutLogging.hpp"
+#include "datahandlinglibs/ReadoutLogging.hpp"
 
 #include <atomic>
 #include <functional>
@@ -29,13 +29,13 @@ namespace ndreadoutlibs {
 class MPDFrameProcessor : public datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>
 {
 public:
-  using inherited = readoutlibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>;
+  using inherited = datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>;
   using frameptr = types::NDReadoutMPDTypeAdapter*;
   using mpdframeptr = dunedaq::nddetdataformats::MPDFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit MPDFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
-    ::datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
+    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
   {}
 
   // Custom pipeline registration

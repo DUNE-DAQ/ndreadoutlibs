@@ -6,7 +6,7 @@ namespace ndreadoutlibs {
 void 
 PACMANFrameProcessor::conf(const appmodel::DataHandlerModule* conf)
 {
-  readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
+  datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
     std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
   // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
   TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::conf(conf);
@@ -19,9 +19,9 @@ void
 PACMANFrameProcessor::timestamp_check(frameptr fp)
 {
   // If EMU data, emulate perfectly incrementing timestamp
-  if (inherited::m_emulator_mode) { // emulate perfectly incrementing timestamp
+  //if (inherited::m_emulator_mode) { // emulate perfectly incrementing timestamp
     // FIX ME - add fake timestamp to PACMAN message struct
-  }
+  //}
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();

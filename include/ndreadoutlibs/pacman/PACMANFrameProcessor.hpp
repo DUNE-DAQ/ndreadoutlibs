@@ -8,35 +8,35 @@
 #ifndef NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANFRAMEPROCESSOR_HPP_
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_PACMAN_PACMANFRAMEPROCESSOR_HPP_
 
-#include "readoutlibs/ReadoutIssues.hpp"
-#include "readoutlibs/models/TaskRawDataProcessorModel.hpp"
+#include "datahandlinglibs/DataHandlingIssues.hpp"
+#include "datahandlinglibs/models/TaskRawDataProcessorModel.hpp"
 
 #include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutPACMANTypeAdapter.hpp"
-#include "readoutlibs/ReadoutLogging.hpp"
+#include "datahandlinglibs/ReadoutLogging.hpp"
 
 #include <atomic>
 #include <functional>
 #include <memory>
 #include <string>
 
-using dunedaq::readoutlibs::logging::TLVL_BOOKKEEPING;
-using dunedaq::readoutlibs::logging::TLVL_FRAME_RECEIVED;
+using dunedaq::datahandlinglibs::logging::TLVL_BOOKKEEPING;
+using dunedaq::datahandlinglibs::logging::TLVL_FRAME_RECEIVED;
 
 namespace dunedaq {
 namespace ndreadoutlibs {
 
-class PACMANFrameProcessor : public readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>
+class PACMANFrameProcessor : public datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>
 {
 public:
-  using inherited = readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>;
+  using inherited = datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>;
   using frameptr = types::NDReadoutPACMANTypeAdapter*;
   using pacmanframeptr = dunedaq::nddetdataformats::PACMANFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
-  explicit PACMANFrameProcessor(std::unique_ptr<readoutlibs::FrameErrorRegistry>& error_registry)
-    : readoutlibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>(error_registry)
+  explicit PACMANFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
+    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>(error_registry)
   {}
 
   // Custom pipeline registration

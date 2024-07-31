@@ -9,7 +9,7 @@
 #define NDREADOUTLIBS_INCLUDE_NDREADOUTLIBS_MPD_MPDLISTREQUESTHANDLER_HPP_
 
 #include "datahandlinglibs/FrameErrorRegistry.hpp"
-#include "datahandlinglibs/ReadoutIssues.hpp"
+#include "datahandlinglibs/DataHandlingIssues.hpp"
 #include "datahandlinglibs/models/DefaultRequestHandlerModel.hpp"
 #include "datahandlinglibs/models/SkipListLatencyBufferModel.hpp"
 
@@ -29,13 +29,13 @@
 #include <utility>
 #include <vector>
 
-using dunedaq::readoutlibs::logging::TLVL_WORK_STEPS;
+using dunedaq::datahandlinglibs::logging::TLVL_WORK_STEPS;
 
 namespace dunedaq {
 namespace ndreadoutlibs {
   
 class MPDListRequestHandler
-  : public datahandlinglibs::DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, readoutlibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>
+  : public datahandlinglibs::DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>
 {
 public:
   using inherited =

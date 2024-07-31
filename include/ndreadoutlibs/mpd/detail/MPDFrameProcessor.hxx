@@ -4,10 +4,10 @@ namespace dunedaq {
 namespace ndreadoutlibs {
 
 void 
-MPDFrameProcessor::conf(const nlohmann::json& args)
+MPDFrameProcessor::conf(const appmodel::DataHandlerModule* conf)
 {
-  auto config = args["rawdataprocessorconf"].get<datahandlinglibs::readoutconfig::RawDataProcessorConf>();
-  m_clock_frequency = config.clock_speed_hz;
+  //auto config = args["rawdataprocessorconf"].get<datahandlinglibs::readoutconfig::RawDataProcessorConf>();
+  //m_clock_frequency = config.clock_speed_hz;
 
   datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>::add_preprocess_task(
     std::bind(&MPDFrameProcessor::timestamp_check, this, std::placeholders::_1));
@@ -22,9 +22,9 @@ void
 MPDFrameProcessor::timestamp_check(frameptr fp)
 {
   // If EMU data, emulate perfectly incrementing timestamp
-  if (inherited::m_emulator_mode) { // emulate perfectly incrementing timestamp
+//  if (inherited::m_emulator_mode) { // emulate perfectly incrementing timestamp
     // FIX ME - add fake timestamp to MPD message struct
-  }
+ // }
 
   // Acquire timestamp
   m_current_ts = fp->get_timestamp();
