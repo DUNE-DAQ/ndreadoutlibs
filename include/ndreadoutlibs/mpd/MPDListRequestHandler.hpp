@@ -44,7 +44,7 @@ public:
   using SkipListSkip = typename folly::ConcurrentSkipList<types::NDReadoutMPDTypeAdapter>::Skipper;
 
   MPDListRequestHandler(
-    std::unique_ptr<datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>& latency_buffer,
+    std::shared_ptr<datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>& latency_buffer,
     std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
     : DefaultRequestHandlerModel<types::NDReadoutMPDTypeAdapter, datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutMPDTypeAdapter>>(latency_buffer, error_registry)
   {

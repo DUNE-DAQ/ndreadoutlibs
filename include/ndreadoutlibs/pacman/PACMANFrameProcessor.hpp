@@ -35,8 +35,8 @@ public:
   using pacmanframeptr = dunedaq::nddetdataformats::PACMANFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
-  explicit PACMANFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
-    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>(error_registry)
+  explicit PACMANFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry, bool post_processing_enabled)
+    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>(error_registry, post_processing_enabled)
   {}
 
   // Custom pipeline registration

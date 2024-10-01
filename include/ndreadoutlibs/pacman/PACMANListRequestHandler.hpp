@@ -48,7 +48,7 @@ public:
   using SkipListSkip = typename folly::ConcurrentSkipList<types::NDReadoutPACMANTypeAdapter>::Skipper;
 
   PACMANListRequestHandler(
-    std::unique_ptr<datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>& latency_buffer,
+    std::shared_ptr<datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>& latency_buffer,
     std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
     : DefaultRequestHandlerModel<types::NDReadoutPACMANTypeAdapter,
                                  datahandlinglibs::SkipListLatencyBufferModel<types::NDReadoutPACMANTypeAdapter>>(latency_buffer,

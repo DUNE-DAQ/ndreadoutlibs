@@ -34,8 +34,8 @@ public:
   using mpdframeptr = dunedaq::nddetdataformats::MPDFrame*;
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
-  explicit MPDFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry)
-    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry)
+  explicit MPDFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry, bool post_processing_enabled)
+    : datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutMPDTypeAdapter>(error_registry, post_processing_enabled)
   {}
 
   // Custom pipeline registration

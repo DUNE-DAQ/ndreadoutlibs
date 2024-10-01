@@ -35,7 +35,7 @@ MPDFrameProcessor::timestamp_check(frameptr fp)
   if (m_current_ts - m_previous_ts <= 0) {
     ++m_ts_error_ctr;
     TLOG_DEBUG(TLVL_BOOKKEEPING) << "Timestamp continuity MISSMATCH! -> | previous: " << std::to_string(m_previous_ts)
-                                 << " current: " + std::to_string(m_current_ts);
+                                 << " current:" + std::to_string(m_current_ts);
   }
 
   if (m_ts_error_ctr > 1000) {

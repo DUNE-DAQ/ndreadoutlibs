@@ -14,7 +14,7 @@
 #include "nddetdataformats/PACMANFrame.hpp"
 #include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
-#include <memory>  // unique_ptr
+#include <memory>  // shared_ptr
 
 namespace dunedaq {
 
@@ -72,10 +72,11 @@ namespace dunedaq {
 				uint64_t get_first_timestamp() const { return get_timestamp(); }
 
 				// FIX ME - implement this in the frame later
-				void set_first_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
+				void set_timestamp(uint64_t /*ts*/) // NOLINT(build/unsigned)
 				{
 					// reinterpret_cast<dunedaq::nddetdataformats::PACMANFrame*>(&data)->set_timestamp(ts); // NOLINT
 				}
+
 
 				uint64_t get_message_type() const // NOLINT(build/unsigned)
 				{
@@ -155,7 +156,7 @@ namespace dunedaq {
 
       typedef dunedaq::iomanager::SenderConcept<NDReadoutPACMANTypeAdapter> PACMANFrameSink;
       typedef std::shared_ptr<PACMANFrameSink> SharedPACMANFrameSink;
-      using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::unique_ptr<types::NDReadoutPACMANTypeAdapter>>;
+      using PACMANFramePtrSink = dunedaq::iomanager::SenderConcept<std::shared_ptr<types::NDReadoutPACMANTypeAdapter>>;
       using SharedPACMANFramePtrSink = std::shared_ptr<PACMANFramePtrSink>;
   
     } // namespace types
