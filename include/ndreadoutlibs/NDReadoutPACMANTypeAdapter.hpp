@@ -12,6 +12,9 @@
 #include "daqdataformats/FragmentHeader.hpp"
 #include "daqdataformats/SourceID.hpp"
 #include "nddetdataformats/PACMANFrame.hpp"
+#include "trigger/TriggerPrimitiveTypeAdapter.hpp"
+
+
 #include "logging/Logging.hpp"
 #include <cstdint> // uint_t types
 #include <memory>  // shared_ptr
@@ -101,8 +104,7 @@ struct NDReadoutPACMANTypeAdapter
 			TLOG_DEBUG(1) << "Inspecting word " << i;
 
 			dunedaq::nddetdataformats::PACMANFrame::PACMANMessageWord* theWord =
-			reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0],
-																																															i); // NOLINT
+			reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0], i); // NOLINT
 
 			TLOG_DEBUG(1) << "Word type: " << (char)theWord->data_word.type;                // NOLINT
 			TLOG_DEBUG(1) << "PACMAN I/O Channel: " << (char)theWord->data_word.channel_id; // NOLINT
@@ -115,7 +117,6 @@ struct NDReadoutPACMANTypeAdapter
 			TLOG_DEBUG(1) << "Packet Type: " << thePacket->data_packet.type;
 			TLOG_DEBUG(1) << "Packet Chip ID: " << thePacket->data_packet.chipid;
 			TLOG_DEBUG(1) << "Packet Channel ID: " << thePacket->data_packet.channelid;
-
 			TLOG_DEBUG(1) << "packet timestamp: " << thePacket->data_packet.timestamp;
 		}
 	}
@@ -150,6 +151,7 @@ struct NDReadoutPACMANTypeAdapter
 	void fake_geoid(uint16_t /*crate_id*/, uint16_t /*slot_id*/, uint16_t /*stream_id*/) {
 	}
 
+
 	void fake_adc_pattern(int /*channel*/) {
 	}
 
@@ -158,7 +160,37 @@ struct NDReadoutPACMANTypeAdapter
 	    // Set error bits in header
 	}
 
+	uint16_t get_num_words(){
+		uint16_t numWords = // NOLINT
+		reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])
+		->get_msg_header((void*)&data[0])
+		->words; // NOLINT
+		return numWords;
+	}
 
+	uint64_t get_channel_id(uint32_t i){
+		auto word_generic = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0], i);
+		if(word_generic->word.type == dunedaq::nddetdataformats::PACMANFrame::DATA_WORD){
+			return word_generic->data_word.channel_id;
+		}
+		else{
+			return 0;
+		}
+
+	}
+
+	uint16_t get_dataword(uint32_t i){
+		auto word_generic = reinterpret_cast<const dunedaq::nddetdataformats::PACMANFrame*>(&data[0])->get_msg_word((void*)&data[0], i);
+		if(word_generic->word.type == dunedaq::nddetdataformats::PACMANFrame::DATA_WORD){
+			return word_generic->data_word.larpix_word.data_packet.dataword;
+		}
+		else{
+			return 0;
+		}
+	}
+
+
+	
 };
 
 /**

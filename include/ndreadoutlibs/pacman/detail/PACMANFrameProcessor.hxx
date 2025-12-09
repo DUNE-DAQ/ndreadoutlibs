@@ -6,10 +6,51 @@ namespace ndreadoutlibs {
 void 
 PACMANFrameProcessor::conf(const appmodel::DataHandlerModule* conf)
 {
-  datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
-    std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1));
+  
   // m_tasklist.push_back( std::bind(&PACMANFrameProcessor::frame_error_check, this, std::placeholders::_1) );
+  for (auto output : conf->get_outputs()) {
+    TLOG() << "On outputs... (" << output->UID() << "," << output->get_data_type() << ")";
+    try {
+      if (output->get_data_type() == "TriggerPrimitiveVector") {
+        TLOG() << "Found TP sink.";
+        m_tp_sink = get_iom_sender<std::vector<trigger::TriggerPrimitiveTypeAdapter>>(output->UID());
+        TLOG() << " SINK INITIALIZED for TriggerPrimitives with UID : " << output->UID();
+        }
+    }
+    catch (const ers::Issue& excpt) {
+      ers::error(datahandlinglibs::ResourceQueueError(ERS_HERE, "tp", "DefaultRequestHandlerModel", excpt));
+    }
+  }
+  datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::add_preprocess_task(
+    std::bind(&PACMANFrameProcessor::timestamp_check, this, std::placeholders::_1)
+  );
+    
   TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>::conf(conf);
+
+  // auto dp = conf->get_module_configuration()->get_data_processor();
+  // if (dp == nullptr) {
+  //   TLOG()<< " PACMAN Data processor does not exist.";
+  // } else {
+  //   auto proc_conf = dp->cast<appmodel::RawDataProcessor>();
+  //   if (proc_conf == nullptr) {
+  //     TLOG()<< "PACMAN DataProcessor does not exist.";
+  //   } else { 
+  //     auto geo_id = conf->get_geo_id();
+  //     if (geo_id != nullptr) {
+  //       m_det_id = geo_id->get_detector_id();
+  //       m_crate_id = geo_id->get_crate_id();
+  //       m_slot_id = geo_id->get_slot_id();
+  //       m_stream_id = geo_id->get_stream_id();
+  //     }
+    
+    // }
+  // }
+      
+  if (m_post_processing_enabled) { 
+    // Extract TPs back as a pre-processing task, due to LatencyBuffer post-proc issues using SkipList.
+    inherited::add_preprocess_task(std::bind(&PACMANFrameProcessor::extract_tps, this, std::placeholders::_1));
+  }
+
 }
 
 /**
@@ -59,6 +100,52 @@ PACMANFrameProcessor::frame_error_check(frameptr /*fp*/)
 
   // fp->inspect_message();
 }
+
+void PACMANFrameProcessor::extract_tps(constframeptr fp){
+  if (!fp || fp==nullptr){
+    return;
+  }
+
+  frameptr non_constfp = const_cast<frameptr>(fp);
+
+  // Only one TP generated
+  std::vector<trigger::TriggerPrimitiveTypeAdapter> tpp;
+  for(unsigned int i=0; i<non_constfp->get_num_frames(); i++){
+    if(non_constfp->get_message_type()!=dunedaq::nddetdataformats::PACMANFrame::DATA_WORD){
+      TLOG()<<"Found message with non-dataword type";
+      continue;
+    }
+    trigger::TriggerPrimitiveTypeAdapter tpa;
+    dunedaq::trgdataformats::TriggerPrimitive tp;
+
+    // Turn dataword into TP
+    tp.adc_integral = non_constfp->get_dataword(i);
+    tp.adc_peak = non_constfp->get_dataword(i);
+    tp.time_start = non_constfp->get_first_timestamp();
+    tp.channel = non_constfp->get_channel_id(i);
+
+    // HARDCODED
+    tp.detid = 0;
+    tp.samples_to_peak = 1;
+    tp.samples_over_threshold = 1;
+    tpa.tp = tp;
+    tp.detid = dunedaq::trgdataformats::INVALID_DETID;
+    tpp.push_back(tpa);
+  }
+  if(!tpp.empty()){
+    if (!m_tp_sink->try_send(std::move(tpp), iomanager::Sender::s_no_block)) {
+      // TODO Make a proper issue
+      TLOG()<<"Failed to send";
+    } 
+  }
+  else{
+    TLOG()<<"TPP empty!"; 
+  }
+
+  return; 
+
+}
+
 
 } // namespace ndreadoutlibs
 } // namespace dunedaq

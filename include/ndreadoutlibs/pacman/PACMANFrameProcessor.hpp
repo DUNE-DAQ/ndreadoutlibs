@@ -15,6 +15,7 @@
 #include "logging/Logging.hpp"
 #include "ndreadoutlibs/NDReadoutPACMANTypeAdapter.hpp"
 #include "datahandlinglibs/ReadoutLogging.hpp"
+#include "trgdataformats/TriggerPrimitive.hpp"
 
 #include <atomic>
 #include <functional>
@@ -33,6 +34,9 @@ public:
   using inherited = datahandlinglibs::TaskRawDataProcessorModel<types::NDReadoutPACMANTypeAdapter>;
   using frameptr = types::NDReadoutPACMANTypeAdapter*;
   using pacmanframeptr = dunedaq::nddetdataformats::PACMANFrame*;
+  using constframeptr = const types::NDReadoutPACMANTypeAdapter*;
+
+
   using timestamp_t = std::uint64_t; // NOLINT(build/unsigned)
 
   explicit PACMANFrameProcessor(std::unique_ptr<datahandlinglibs::FrameErrorRegistry>& error_registry, bool post_processing_enabled)
@@ -41,6 +45,7 @@ public:
 
   // Custom pipeline registration
   void conf(const appmodel::DataHandlerModule* conf) override;
+
 
 protected:
   // Internals
@@ -51,6 +56,14 @@ protected:
   bool m_problem_reported = false;
   std::atomic<int> m_ts_error_ctr{ 0 };
 
+  /// TODO: Add opmon info to display these
+  uint32_t m_det_id; // NOLINT(build/unsigned)
+  uint32_t m_crate_id; // NOLINT(build/unsigned)
+  uint32_t m_slot_id;  // NOLINT(build/unsigned)
+  uint32_t m_stream_id; // NOLINT(build/unsigned)
+
+  std::shared_ptr<iomanager::SenderConcept<std::vector<trigger::TriggerPrimitiveTypeAdapter>>> m_tp_sink;
+
   /**
    * Pipeline Stage 1.: Check proper timestamp increments in DAPHNE frame
    * */
@@ -60,6 +73,8 @@ protected:
    * Pipeline Stage 2.: Check headers for error flags
    * */
   void frame_error_check(frameptr /*fp*/);
+
+  void extract_tps(constframeptr fp);
 
 private:
 };

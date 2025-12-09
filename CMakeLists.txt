@@ -9,6 +9,8 @@ find_package(ers REQUIRED)
 find_package(appfwk REQUIRED)
 find_package(logging REQUIRED)
 find_package(opmonlib REQUIRED)
+find_package(trgdataformats REQUIRED)
+find_package(trigger REQUIRED)
 find_package(datahandlinglibs REQUIRED)
 find_package(appmodel REQUIRED)
 find_package(daqdataformats REQUIRED)
@@ -36,6 +38,8 @@ set(NDREADOUTLIBS_DEPENDENCIES
   daqdataformats::daqdataformats
   detdataformats::detdataformats
   nddetdataformats::nddetdataformats
+  trgdataformats::trgdataformats
+  trigger::trigger
 )
 
 ##############################################################################
