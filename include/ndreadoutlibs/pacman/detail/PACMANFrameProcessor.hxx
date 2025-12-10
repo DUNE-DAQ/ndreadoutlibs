@@ -43,13 +43,13 @@ PACMANFrameProcessor::conf(const appmodel::DataHandlerModule* conf)
   //       m_stream_id = geo_id->get_stream_id();
   //     }
     
-    // }
+  //   }
   // }
       
-  if (m_post_processing_enabled) { 
-    // Extract TPs back as a pre-processing task, due to LatencyBuffer post-proc issues using SkipList.
-    inherited::add_preprocess_task(std::bind(&PACMANFrameProcessor::extract_tps, this, std::placeholders::_1));
-  }
+  // if (m_post_processing_enabled) { 
+  //   // Extract TPs back as a pre-processing task, due to LatencyBuffer post-proc issues using SkipList.
+  //   inherited::add_preprocess_task(std::bind(&PACMANFrameProcessor::extract_tps, this, std::placeholders::_1));
+  // }
 
 }
 
@@ -136,7 +136,7 @@ void PACMANFrameProcessor::extract_tps(constframeptr fp){
     if (!m_tp_sink->try_send(std::move(tpp), iomanager::Sender::s_no_block)) {
       // TODO Make a proper issue
       TLOG()<<"Failed to send";
-    } 
+    }
   }
   else{
     TLOG()<<"TPP empty!"; 
